@@ -2,20 +2,17 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Collections;
 
 
 public class SAXManegador extends DefaultHandler {
-
-    Registre p = new Registre();
-    List<Registre> Acc = new ArrayList<Registre>();
 
 
     private boolean is_districte = false;
     private String districte = "";
     public int nAccidents = 0;
     ArrayList<String> codidist = new ArrayList<>();
-
+    
 
     @Override
     public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
@@ -25,25 +22,38 @@ public class SAXManegador extends DefaultHandler {
 
         }
     }
-
-    public void endElement(String uri, String localName, String qName) throws SAXException {
-        if (qName.equalsIgnoreCase("Registre")) {
-            Registre mew = new Registre();
-            mew.setDistricte(districte);
-            Acc.add(mew);
-        }
-    }
-
     @Override
     public void characters(char[] ch, int start, int length) throws SAXException {
 
         String value = new String(ch, start, length).trim();
         if (value.length() == 0) return;
         if (is_districte) {
-            districte = value;
-            is_districte = false;
             codidist.add(value);
+            is_districte = false;
         }
+    }
+
+    public int getMax(ArrayList<String> sArr) {
+        Collections.sort(sArr);
+        String temp = sArr.get(1);
+        String end = "";
+        int max  = 0;
+        int count = 0;
+        for(String cad : sArr){
+            if(cad.equals(temp)){
+                count++;
+            }
+            else {
+                if(count>=max){
+                    max=count;
+                    end=cad;
+                }
+                count = 0;
+                temp = cad;
+            }
+        }
+
+        return max;
     }
         @Override
         public void startDocument () throws SAXException {
