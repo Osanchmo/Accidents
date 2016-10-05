@@ -19,16 +19,14 @@ public class Accidents {
             saxParser.parse(xmlInput, handler);
             tractarllista(handler);
 
-        } catch (ParserConfigurationException e) {
-            e.printStackTrace();
-        } catch (SAXException e) {
+        } catch (ParserConfigurationException | SAXException e) {
             e.printStackTrace();
         }
     }
     private static void tractarllista(SAXManegador sax) {
 
-        for (Registre reg : sax.Acc)
-
         System.out.println("Número accidents: " + sax.nAccidents);
+        System.out.println("Districte amb mes accidents: " + sax.getMax(sax.codidist));
+
     }
 }

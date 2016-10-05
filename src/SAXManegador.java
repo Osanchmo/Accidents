@@ -7,19 +7,16 @@ import java.util.Collections;
 
 public class SAXManegador extends DefaultHandler {
 
-
     private boolean is_districte = false;
-    private String districte = "";
     public int nAccidents = 0;
     ArrayList<String> codidist = new ArrayList<>();
-    
+
 
     @Override
     public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
             nAccidents++;
-        if (qName.equalsIgnoreCase("Codidistricte")) {
+        if (qName.equalsIgnoreCase("nomdistricte")) {
             is_districte = true;
-
         }
     }
     @Override
@@ -33,7 +30,7 @@ public class SAXManegador extends DefaultHandler {
         }
     }
 
-    public int getMax(ArrayList<String> sArr) {
+    public String getMax(ArrayList<String> sArr) {
         Collections.sort(sArr);
         String temp = sArr.get(1);
         String end = "";
@@ -53,7 +50,7 @@ public class SAXManegador extends DefaultHandler {
             }
         }
 
-        return max;
+        return end + " amb " + max + " accidents.";
     }
         @Override
         public void startDocument () throws SAXException {
