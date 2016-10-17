@@ -25,8 +25,12 @@ public class Accidents {
     }
     private static void tractarllista(SAXManegador sax) {
 
-        System.out.println("Número accidents: " + sax.nAccidents);
+        System.out.println("Número accidents: " + sax.getnAccidents());
         System.out.println("Districte amb mes accidents: " + sax.getMax(sax.codidist));
-
+        System.out.println("Carrer mes conflictiu: " + sax.getMax(sax.carrers));
+        System.out.println("Dia de la setmana amb més accidents: " + sax.getMax(sax.diaSetmana));
+        System.out.println("Dia de la setmana amb menys accidents: " + sax.getMin(sax.diaSetmana));
+        System.out.println("mes amb més accidents: " + sax.getMax(sax.diaMes));
+        System.out.println("mes amb menys accidents: " + sax.getMin(sax.diaMes));
     }
 }
