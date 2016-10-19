@@ -1,8 +1,8 @@
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
-import java.util.ArrayList;
-import java.util.Collections;
+
+import java.util.*;
 
 
 public class SAXManegador extends DefaultHandler {
@@ -13,10 +13,10 @@ public class SAXManegador extends DefaultHandler {
     private boolean is_mes = false;
     private int nAccidents = 0;
 
-    ArrayList<String> codidist = new ArrayList<>();
-    ArrayList<String> carrers = new ArrayList<>();
-    ArrayList<String> diaSetmana = new ArrayList<>();
-    ArrayList<String> diaMes = new ArrayList<>();
+    List<String> codidist = new ArrayList<>();
+    List<String> carrers = new ArrayList<>();
+    List<String> diaSetmana = new ArrayList<>();
+    List<String> diaMes = new ArrayList<>();
 
     public int getnAccidents() {
         return nAccidents;
@@ -35,6 +35,13 @@ public class SAXManegador extends DefaultHandler {
             is_mes = true;
     }
 
+    /**
+     * comprovem quina dada volem y la afegim a un array
+     * @param ch
+     * @param start
+     * @param length
+     * @throws SAXException
+     */
     @Override
     public void characters(char[] ch, int start, int length) throws SAXException {
 
@@ -46,80 +53,61 @@ public class SAXManegador extends DefaultHandler {
         } else if (is_carrer) {
             carrers.add(value);
             is_carrer = false;
-        }else if (is_dia) {
+        } else if (is_dia) {
             diaSetmana.add(value);
             is_dia = false;
-        }else if (is_mes) {
+        } else if (is_mes) {
             diaMes.add(value);
             is_mes = false;
         }
     }
 
+
     /**
-     * recorre el array y busca el elemento mas repetido y cuantas veces esta repetido
-     * @param sArr
-     * @return l'element més repetit y la cuantitat
+     * compara cada cadena diferent y emmagatzema la que te major freqüència
+     * @param lista
+     * @return nom + freqüència
      */
-    public String getMax(ArrayList<String> sArr) {
-        Collections.sort(sArr);
-        String temp = sArr.get(0);
-        String end = "";
-        int max = 0;
-        int count = 0;
-
-        for (String cad : sArr) {
-            if (cad.equals(temp)) {
-                count++;
-            } else {
-                count++;
-                temp = cad;
-                if (count > max) {
-                    max = count;
-                    end = temp;
-                }
-                count = 0;
-
+    public String getMax(List<String> lista) {
+        Set<String> hash = new HashSet<String>(lista);
+        int temp = 0;
+        String cadTemp = null;
+        for (String cadena : hash) {
+            if (Collections.frequency(lista, cadena) >= temp) {
+                temp = Collections.frequency(lista, cadena);
+                cadTemp = cadena;
             }
         }
-        return end + " amb " + max + " accidents.";
+        return (cadTemp + " amb " + temp + " Accidents.");
     }
 
     /**
-     * recorre el array y busca el elemento menos repetido y cuantas veces esta repetido
-     * @param sArr
-     * @return l'element més petit y la cuantitat
+     * Compara cada cadena diferent y emmagatzema la que té menor freqüència
+     * @param lista
+     * @return nom + freqüència
      */
-    public String getMin(ArrayList <String> sArr) {
-            Collections.sort(sArr);
-            String temp = sArr.get(0);
-            String end = "";
-            int min = 20000;
-            int count = 0;
-            for (String cad : sArr) {
-                if (cad.equals(temp)) {
-                    count++;
-                } else {
-                    count++;
-                    if (count <= min) {
-                        min = count;
-                        end = temp;
-                    }
-                    count = 0;
-                    temp = cad;
-                }
+    public String getMin(List<String> lista) {
+        Set<String> hash = new HashSet<String>(lista);
+        int temp = 20000;
+        String cadTemp = null;
+        for (String cadena : hash) {
+            if (Collections.frequency(lista, cadena) <= temp) {
+                temp = Collections.frequency(lista, cadena);
+                cadTemp = cadena;
             }
-            return end + " amb " + min + " accidents.";
         }
-
-        @Override
-        public void startDocument () throws SAXException {
-        }
-
-        @Override
-        public void endDocument () throws SAXException {
-            nAccidents = codidist.size();
-        }
+        return (cadTemp + " amb " + temp + " Accidents.");
     }
+
+    @Override
+    public void startDocument() throws SAXException {
+    }
+
+    @Override
+    public void endDocument() throws SAXException {
+        nAccidents = codidist.size();
+    }
+}
 
 
 
